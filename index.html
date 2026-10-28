@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="description"
+    content="HIPC: HUMANOID ITERATIVE PLANNING AND CONTROL VIA GOAL-CONDITIONED MOTION CLOSURE">
+  <meta name="keywords" content="Motion Generation, Humanoid Control">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>
+    HIPC: Humanoid Iterative Planning and Control via Goal-Conditioned Motion Closure
+  </title>
+
+  <link rel="icon" href="./static/images/skateboarding_icon.png">
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-QZ38WT2YPD"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+
+    gtag('config', 'G-QZ38WT2YPD');
+  </script>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+  <script src="./static/js/index.js"></script>
+
+  <meta property="og:image" content="./static/images/teaser.png" />
+  <meta property="og:image:secure" content="./static/images/teaser.png" />
+</head>
+
+<body>
+<!-- Title cover. Teaser artwork is configured in the image slot below. -->
+<section class="hero is-link is-fullheight title-cover" style="overflow: hidden; position: relative;">
+  <div class="overlay"></div>
+  <!-- Hero content: will be in the middle -->
+  <div class="hero-body">
+    <div class="container has-text-centered">
+      <h1 class="title is-1 publication-title is-size-1-mobile" style="font-size: 6rem;">
+        <span style="color: #ff9900;">HIPC</span>
+      </h1>
+      <h1 class="subtitle is-1 publication-title is-size-4-mobile" style="font-size: 4rem;">
+      <span style="color: #ff9900;">H</span>umanoid 
+      <span style="color: #ff9900;">I</span>terative
+      <span style="color: #ff9900;">P</span>lanning
+      and
+      <span style="color: #ff9900;">C</span>ontrol 
+      <br> via Goal-Conditioned Motion Closure
+      </h1>
+
+      <div class="column has-text-centered is-hidden-tablet">
+        <div class="publication-links">
+          <!-- PDF placeholder. -->
+          <span class="link-block">
+            <span class="button is-normal is-rounded is-dark" aria-disabled="true">
+              <span class="icon">
+                <img src="./static/images/pdf.svg" alt="PDF" />
+              </span>
+              <span>PDF (coming soon)</span>
+            </span>
+          </span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</section>
+
+
+<section class="hero">
+  <nav class="toc" aria-label="Page content">
+    <h3>Content</h3>
+    <hr>
+    <ul>
+      <li><a href="#abstract">Abstract</a></li>
+      <li><a href="#goal-planning-control">1. Goal-Conditioned Tracking</a></li>
+      <li class="toc-subsection"><a href="#goal-conditions">1.1 Goal Conditions</a></li>
+      <li class="toc-subsection toc-subsubsection"><a href="#root-position" data-parent="#goal-conditions">#1 Root Position</a></li>
+      <li class="toc-subsection toc-subsubsection"><a href="#root-orientation" data-parent="#goal-conditions">#2 Root Orientation</a></li>
+      <li class="toc-subsection toc-subsubsection"><a href="#root-velocity" data-parent="#goal-conditions">#3 Root Velocity</a></li>
+      <li class="toc-subsection toc-subsubsection"><a href="#joint-configuration" data-parent="#goal-conditions">#4 Joint Configuration</a></li>
+      <li class="toc-subsection toc-subsubsection"><a href="#end-effector-position" data-parent="#goal-conditions">#5 End-Effector Position</a></li>
+      <li class="toc-subsection"><a href="#text-conditioned-motion-priors">1.2 Text-Conditioned Motion Priors</a></li>
+      <li class="toc-subsection"><a href="#dynamic-goal-switching">1.3 Dynamic Goal Switching</a></li>
+      <li class="toc-subsection"><a href="#real-world-goal-tracking">1.4 Real-World Goal Tracking</a></li>
+      <li><a href="#robust-tracking-recovery">2. Robust Tracking &amp; Recovery</a></li>
+      <li class="toc-subsection"><a href="#perturbation-recovery">2.1 Robustness under Perturbations</a></li>
+      <li class="toc-subsection"><a href="#fall-recovery">2.2 Fall Recovery &amp; Get-Up</a></li>
+      <li><a href="#motion-closure-comparison">3. Comparison Experiments</a></li>
+      <li class="toc-subsection"><a href="#baseline-comparison">3.1 Baseline Comparison</a></li>
+      <li class="toc-subsection"><a href="#open-closed-loop-comparison">3.2 Open-Loop vs. Closed-Loop</a></li>
+      <li><a href="#scene-navigation">4. Scene Navigation</a></li>
+      <li class="toc-subsection"><a href="#map-based-navigation">4.1 A*-Guided Maze Navigation</a></li>
+      <li class="toc-subsection"><a href="#vision-language-navigation">4.2 VLN-Guided Indoor Navigation</a></li>
+      <li><a href="#conclusion">Conclusion</a></li>
+    </ul>
+  </nav>
+  <div class="hero-body">
+    <div class="container">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <h1 class="title is-1 publication-title" id="main-title"><span style="color: #ff9900;">HIPC</span>: Humanoid Iterative Planning and Control via Goal-Conditioned Motion Closure</h1>
+          <!-- Authors -->
+          <div class="is-size-5 publication-authors" style="line-height: 1.6; margin-top: 10px; color: #000;">
+            <span class="author-block">Yi Han<sup>1*</sup>,</span>
+            <span class="author-block">Xingyu Chen<sup>2,3*</sup>,</span>
+            <span class="author-block">Zixuan Lang<sup>3</sup>,</span>
+            <span class="author-block">Qianyang Wu<sup>4</sup>,</span>
+            <span class="author-block">Yuhang Lin<sup>5</sup>,</span>
+            <span class="author-block">Ji Ma<sup>6</sup>,</span>
+            <span class="author-block">Liang Li<sup>7</sup>,</span>
+          </div>
+          <div class="is-size-5 publication-authors" style="line-height: 1.8; color: #000;">
+            <span class="author-block">Dongting Li<sup>7</sup>,</span>
+            <span class="author-block">Xinpeng Liu<sup>1</sup>,</span>
+            <span class="author-block">Ruoli Dai<sup>3</sup>,</span>
+            <span class="author-block">Hesheng Wang<sup>1†</sup>,</span>
+            <span class="author-block">Renjing Xu<sup>2†</sup>,</span>
+            <span class="author-block">Lei Han<sup>3†</sup></span>
+          </div>
+
+          <div class="is-size-6 publication-authors" style="margin-top: 12px; margin-bottom: 12px;">
+            <sup style="color: #ff9900;">*</sup>Equal Contribution &nbsp;&nbsp; <sup style="color: #ff9900;">†</sup>Equal Advising
+          </div>
+
+          <!-- Institution Names -->
+          <div class="institution-names" style="font-family: 'Google Sans', sans-serif; font-size: 1rem; color: #555; line-height: 1.6;">
+            <sup>1</sup> SJTU &nbsp;&nbsp; <sup>2</sup> HKUST(GZ) &nbsp;&nbsp; <sup>3</sup> Noitom &nbsp;&nbsp; <sup>4</sup> ShanghaiTech &nbsp;&nbsp; <sup>5</sup> ZJU &nbsp;&nbsp; <sup>6</sup> HKU &nbsp;&nbsp; <sup>7</sup> THU
+          </div>
+
+          <!-- Publication placeholders -->
+          <div class="publication-links" style="margin-top: 15px;">
+            <span class="link-block">
+              <span class="button is-normal is-rounded is-dark" style="margin: 5px;" aria-disabled="true">
+                <span class="icon">
+                  <img src="./static/images/pdf.svg" alt="PDF" />
+                </span>
+                <span>PDF (coming soon)</span>
+              </span>
+            </span>
+            <span class="link-block">
+              <span class="button is-normal is-rounded is-dark" style="margin: 5px;" aria-disabled="true">
+                <span class="icon">
+                  <img src="./static/images/arxiv.svg" alt="arXiv" />
+                </span>
+                <span>arXiv (coming soon)</span>
+              </span>
+            </span>
+            <span class="link-block">
+              <span class="button is-normal is-rounded is-dark" style="margin: 5px;" aria-disabled="true">
+                <span class="icon">
+                  <img src="./static/images/github.svg" alt="GitHub" style="filter: invert(1);" />
+                </span>
+                <span>Code (coming soon)</span>
+              </span>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- MEDIA SLOT: Teaser image. Replace the image file or change only img src below. -->
+    <div class="columns is-centered" style="margin-top: 2rem;">
+      <div class="columns is-centered">
+        <img src="./static/images/teaser.png" alt="HIPC teaser" style="width: 65%; border-radius: 10px;" />
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section class="section" id="abstract">
+  <div class="container">
+    <!-- Abstract. -->
+    <h2 class="title is-2" id="abstract-title">Abstract</h2>
+    <div class="columns is-centered">
+      <div class="column is-four-fifths">
+        <div class="content has-text-justified">
+          <p>
+Recent generative models are widely used to provide whole-body motion for humanoid tracking. Current methods combine motion generators with controllers in an open-loop paradigm, which leads to critical issues: tracking errors can accumulate into spatial drift, and the planner cannot adapt to unexpected physical disturbances without feedback from physical execution. 
+However, directly feeding realized states back to the planner in a closed loop can cause discontinuities, resulting in physical jitter and even falls, since such states are out of distribution during training.
+To bridge this gap, we propose HIPC, a real-time Humanoid Iterative Planning and Control framework that couples a generative model with motion tracking into a unified planning-and-control paradigm.
+HIPC introduces a goal-conditioned motion planning trained with a canonical motion representation that avoids gimbal-lock singularities under extreme orientations and supports motion generation on diverse geometric and semantic conditions.
+Then, HIPC adopts two strategies, deviation-decayed recovery and history re-anchoring, to mitigate the out-of-distribution shift caused by realized-state feedback.
+Finally, HIPC operates a real-time asynchronous planning-and-control system, with latency compensation to reduce temporal mismatch for inference delay.
+Extensive experiments confirm the effectiveness of HIPC under switching and composition of diverse conditions. Results show that HIPC achieves state-of-the-art goal-reaching accuracy among existing methods while simultaneously demonstrating robustness to physical perturbations and the ability to recover from falls.
+          </p>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section class="section" id="goal-planning-control">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-full-width">
+        <h2 class="title is-2">1. Goal-Conditioned Tracking</h2>
+        <p class="figure-caption non-gallery-caption">HIPC generates whole-body motion references from geometric and semantic conditions, and closes the loop with physical execution. These examples show goal reaching, online goal updates, and real-world deployment.</p>
+        <div class="demo-subsection" id="goal-conditions">
+          <h3 class="title is-4">1.1 Goal Conditions</h3>
+          <p class="figure-caption non-gallery-caption">HIPC supports geometric goal conditions at different levels of the humanoid state and body configuration.</p>
+
+          <h4 class="title is-5 goal-type-title" id="root-position">#1 Root Position</h4>
+          <p class="figure-caption non-gallery-caption">HIPC reaches root-position goals across different target distances and heights.</p>
+          <div class="paper-video-row root-position-grid">
+            <figure class="paper-video-item">
+              <video class="paper-video" autoplay muted loop playsinline controls src="./static/video/goal/position/distance_1.mp4" aria-label="Root position goal at a distance of 1 meter"></video>
+              <figcaption><b>Goal Distance: 1 m</b></figcaption>
+            </figure>
+            <figure class="paper-video-item">
+              <video class="paper-video" autoplay muted loop playsinline controls src="./static/video/goal/position/distance_2.mp4" aria-label="Root position goal at a distance of 2 meters"></video>
+              <figcaption><b>Goal Distance: 2 m</b></figcaption>
+            </figure>
+            <figure class="paper-video-item">
+              <video class="paper-video" autoplay muted loop playsinline controls src="./static/video/goal/position/distance_3.mp4" aria-label="Root position goal at a distance of 3 meters"></video>
+              <figcaption><b>Goal Distance: 3 m</b></figcaption>
+            </figure>
+            <figure class="paper-video-item">
+              <video class="paper-video" autoplay muted loop playsinline controls src="./static/video/goal/position/height_0_2.mp4" aria-label="Root position goal at a height of 0.2 meters"></video>
+              <figcaption><b>Goal Height: 0.2 m</b></figcaption>
+            </figure>
+            <figure class="paper-video-item">
+              <video class="paper-video" autoplay muted loop playsinline controls src="./static/video/goal/position/height_0_4.mp4" aria-label="Root position goal at a height of 0.4 meters"></video>
+              <figcaption><b>Goal Height: 0.4 m</b></figcaption>
+            </figure>
+            <figure class="paper-video-item">
+              <video class="paper-video" autoplay muted loop playsinline controls src="./static/video/goal/position/height_0_6.mp4" aria-label="Root position goal at a height of 0.6 meters"></video>
+              <figcaption><b>Goal Height: 0.6 m</b></figcaption>
+            </figure>
+            <figure class="paper-video-item">
+              <video class="paper-video" autoplay muted loop playsinline controls src="./static/video/goal/position/height_0_8.mp4" aria-label="Root position goal at a height of 0.8 meters"></video>
+              <figcaption><b>Goal Height: 0.8 m</b></figcaption>
+            </figure>
+            <figure class="paper-video-item">
+              <video class="paper-video" autoplay muted loop playsinline controls src="./static/video/goal/position/height_1_2.mp4" aria-label="Root position goal at a height of 1.2 meters"></video>
+              <figcaption><b>Goal Height: 1.2 m</b></figcaption>
+            </figure>
+          </div>
+
+          <h4 class="title is-5 goal-type-title" id="root-orientation">#2 Root Orientation</h4>
+          <div class="paper-video-row loop-comparison-row">
+            <figure class="paper-video-item">
+              <video class="paper-video" autoplay muted loop playsinline controls src="./static/video/goal/orientation/yaw_90.mp4" aria-label="Root-orientation goal with a yaw of 90 degrees"></video>
+              <figcaption><b>Yaw: 90&deg;</b></figcaption>
+            </figure>
+            <figure class="paper-video-item">
+              <video class="paper-video" autoplay muted loop playsinline controls src="./static/video/goal/orientation/yaw_180.mp4" aria-label="Root-orientation goal with a yaw of 180 degrees"></video>
+              <figcaption><b>Yaw: 180&deg;</b></figcaption>
+            </figure>
+          </div>
+
+          <h4 class="title is-5 goal-type-title" id="root-velocity">#3 Root Velocity</h4>
+          <div class="paper-video-row root-position-grid">
+            <figure class="paper-video-item">
+              <video class="paper-video" autoplay muted loop playsinline controls src="./static/video/goal/velocity/forward_0_6.mp4" aria-label="Forward root-velocity goal at 0.6 meters per second"></video>
+              <figcaption><b>Forward: 0.6 m/s</b></figcaption>
+            </figure>
+            <figure class="paper-video-item">
+              <video class="paper-video" autoplay muted loop playsinline controls src="./static/video/goal/velocity/forward_1_0.mp4" aria-label="Forward root-velocity goal at 1.0 meters per second"></video>
+              <figcaption><b>Forward: 1.0 m/s</b></figcaption>
+            </figure>
+            <figure class="paper-video-item">
+              <video class="paper-video" autoplay muted loop playsinline controls src="./static/video/goal/velocity/forward_1_5.mp4" aria-label="Forward root-velocity goal at 1.5 meters per second"></video>
+              <figcaption><b>Forward: 1.5 m/s</b></figcaption>
+            </figure>
+            <figure class="paper-video-item">
+              <video class="paper-video" autoplay muted loop playsinline controls src="./static/video/goal/velocity/backward_1_0.mp4" aria-label="Backward root-velocity goal at 1.0 meters per second"></video>
+              <figcaption><b>Backward: 1.0 m/s</b></figcaption>
+            </figure>
+            <figure class="paper-video-item">
+              <video class="paper-video" autoplay muted loop playsinline controls src="./static/video/goal/velocity/left_1_0.mp4" aria-label="Leftward root-velocity goal at 1.0 meters per second"></video>
+              <figcaption><b>Left: 1.0 m/s</b></figcaption>
+            </figure>
+            <figure class="paper-video-item">
+              <video class="paper-video" autoplay muted loop playsinline controls src="./static/video/goal/velocity/right_1_0.mp4" aria-label="Rightward root-velocity goal at 1.0 meters per second"></video>
+              <figcaption><b>Right: 1.0 m/s</b></figcaption>
+            </figure>
+          </div>
+
+          <h4 class="title is-5 goal-type-title" id="joint-configuration">#4 Joint Configuration</h4>
+          <div class="paper-video-row loop-comparison-row">
+            <figure class="paper-video-item">
+              <video class="paper-video" autoplay muted loop playsinline controls src="./static/video/goal/joint/half_squat.mp4" aria-label="Half-squat joint-configuration goal"></video>
+              <figcaption><b>Half Squat</b></figcaption>
+            </figure>
+            <figure class="paper-video-item">
+              <video class="paper-video" autoplay muted loop playsinline controls src="./static/video/goal/joint/raise_hand.mp4" aria-label="Raised-hand joint-configuration goal"></video>
+              <figcaption><b>Raise Hand</b></figcaption>
+            </figure>
+          </div>
+
+          <h4 class="title is-5 goal-type-title" id="end-effector-position">#5 End-Effector Position</h4>
+          <div class="paper-video-row loop-comparison-row">
+            <figure class="paper-video-item">
+              <video class="paper-video" autoplay muted loop playsinline controls src="./static/video/goal/end_effector/static.mp4" aria-label="Static end-effector position goal"></video>
+              <figcaption><b>Static Goal</b></figcaption>
+            </figure>
+            <figure class="paper-video-item">
+              <video class="paper-video" autoplay muted loop playsinline controls src="./static/video/goal/end_effector/dynamic.mp4" aria-label="Dynamic end-effector position goal"></video>
+              <figcaption><b>Dynamic Goal</b></figcaption>
+            </figure>
+          </div>
+        </div>
+        <div class="demo-subsection" id="text-conditioned-motion-priors">
+          <h3 class="title is-4">1.2 Text-Conditioned Motion Priors</h3>
+          <div class="paper-video-row motion-prior-row">
+            <figure class="paper-video-item">
+              <video class="paper-video" autoplay muted loop playsinline controls src="./static/video/text/walk.mp4" aria-label="Walking motion prior"></video>
+              <figcaption><b>Walking</b></figcaption>
+            </figure>
+            <figure class="paper-video-item">
+              <video class="paper-video" autoplay muted loop playsinline controls src="./static/video/text/run.mp4" aria-label="Running motion prior"></video>
+              <figcaption><b>Running</b></figcaption>
+            </figure>
+            <figure class="paper-video-item">
+              <video class="paper-video" autoplay muted loop playsinline controls src="./static/video/text/march.mp4" aria-label="Marching motion prior"></video>
+              <figcaption><b>Marching</b></figcaption>
+            </figure>
+          </div>
+          <p class="figure-caption non-gallery-caption"><b>Text as a Motion Prior.</b> Text conditions guide the style and behavior of generated whole-body motion. These examples show walking, running, and marching priors used alongside geometric goal conditions.</p>
+        </div>
+        <div class="demo-subsection" id="dynamic-goal-switching">
+          <h3 class="title is-4">1.3 Dynamic Goal Switching</h3>
+          <div class="paper-video-row loop-comparison-row">
+            <figure class="paper-video-item">
+              <video class="paper-video" autoplay muted loop playsinline controls src="./static/video/goal/goal_attraction.mp4" aria-label="Root-position goal attraction"></video>
+              <figcaption><b>Goal Attraction</b></figcaption>
+            </figure>
+            <figure class="paper-video-item">
+              <video class="paper-video" autoplay muted loop playsinline controls src="./static/video/goal/goal_switching.mp4" aria-label="Dynamic goal switching"></video>
+              <figcaption><b>Dynamic Goal Switching</b></figcaption>
+            </figure>
+          </div>
+          <p class="figure-caption non-gallery-caption"><b>Online Goal Updates.</b> The humanoid adapts its motion as the target changes during execution.</p>
+        </div>
+        <div class="demo-subsection" id="real-world-goal-tracking">
+          <h3 class="title is-4">1.4 Real-World Goal Tracking</h3>
+          <div class="scene-experiment-list">
+          <figure class="paired-demo">
+            <div class="scene-experiment-row">
+              <video class="paper-video" autoplay muted loop playsinline controls src="./static/video/2real/1.mp4"></video>
+              <video class="paper-video" autoplay muted loop playsinline controls src="./static/video/2real/r1.mp4"></video>
+            </div>
+            <figcaption class="figure-caption non-gallery-caption"><b>Real-World Goal Tracking — Example 1.</b> Humanoid motion execution under goal-conditioned planning and control.</figcaption>
+          </figure>
+          <figure class="paired-demo">
+            <div class="scene-experiment-row">
+              <video class="paper-video" autoplay muted loop playsinline controls src="./static/video/2real/2.mp4"></video>
+              <video class="paper-video" autoplay muted loop playsinline controls src="./static/video/2real/r2.mp4"></video>
+            </div>
+            <figcaption class="figure-caption non-gallery-caption"><b>Real-World Goal Tracking — Example 2.</b> Humanoid motion execution under goal-conditioned planning and control.</figcaption>
+          </figure>
+          <figure class="paired-demo">
+            <div class="scene-experiment-row">
+              <video class="paper-video" autoplay muted loop playsinline controls src="./static/video/2real/3.mp4"></video>
+              <video class="paper-video" autoplay muted loop playsinline controls src="./static/video/2real/r3.mp4"></video>
+            </div>
+            <figcaption class="figure-caption non-gallery-caption"><b>Real-World Goal Tracking — Example 3.</b> Humanoid motion execution under goal-conditioned planning and control.</figcaption>
+          </figure>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="robust-tracking-recovery">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-full-width">
+        <h2 class="title is-2">2. Robust Tracking &amp; Recovery</h2>
+        <p class="figure-caption non-gallery-caption">Execution feedback allows HIPC to revise motion plans when physical motion deviates from the reference. The following examples distinguish trajectory correction from recovery after a fall.</p>
+        <div class="demo-subsection" id="perturbation-recovery">
+          <h3 class="title is-4">2.1 Robustness under Perturbations</h3>
+          <div class="paper-video-row">
+            <div class="paper-video-item">
+              <video class="paper-video" style="height: auto;" autoplay muted loop playsinline controls src="./static/video/recovery/jog_circle.mp4"></video>
+            </div>
+          </div>
+          <p class="figure-caption non-gallery-caption"><b>Trajectory Recovery.</b> HIPC corrects spatial drift and maintains the desired trajectory under physical perturbations.</p>
+        </div>
+        <div class="demo-subsection" id="fall-recovery">
+          <h3 class="title is-4">2.2 Fall Recovery &amp; Get-Up</h3>
+          <div class="paper-video-row">
+            <div class="paper-video-item">
+              <video class="paper-video" style="height: auto;" autoplay muted loop playsinline controls src="./static/video/recovery/highlight.mp4"></video>
+            </div>
+          </div>
+          <p class="figure-caption non-gallery-caption"><b>Simulation Recovery.</b> The humanoid recovers from falls and resumes tracking the desired motion.</p>
+          <div class="paper-video-row">
+            <div class="paper-video-item">
+              <video class="paper-video" autoplay muted loop playsinline controls src="./static/video/2real/robot_fall.mp4"></video>
+            </div>
+          </div>
+          <p class="figure-caption non-gallery-caption"><b>Real-World Recovery.</b> The humanoid recovers from a fall and returns to a standing posture.</p>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="motion-closure-comparison">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-full-width">
+        <h2 class="title is-2">3. Comparison Experiments</h2>
+        <div class="demo-subsection">
+          <h3 class="title is-4" id="baseline-comparison">3.1 Baseline Comparison</h3>
+          <p class="figure-caption non-gallery-caption">We compare HIPC with TextOp, OMG, Kimodo, and ARDY. For each comparison case, both the input motion history and the future root positions used as planar goals are sampled from 100STYLE. All methods are connected to the same SONIC tracker under the same closed-loop protocol. The videos below show the resulting planning-and-control executions after SONIC tracking, alongside the corresponding ground-truth motions.</p>
+          <div class="paper-video-row" style="max-width: 840px;">
+            <div class="paper-video-item" style="width: 100%;">
+              <video class="paper-video" style="width: 100%; height: auto;" autoplay muted loop playsinline controls src="./static/video/baselines/case_07.mp4" aria-label="Baseline comparison case 07"></video>
+            </div>
+          </div>
+          <div class="paper-video-row" style="max-width: 840px;">
+            <div class="paper-video-item" style="width: 100%;">
+              <video class="paper-video" style="width: 100%; height: auto;" autoplay muted loop playsinline controls src="./static/video/baselines/case_10.mp4" aria-label="Baseline comparison case 10"></video>
+            </div>
+          </div>
+          <div class="paper-video-row" style="max-width: 840px;">
+            <div class="paper-video-item" style="width: 100%;">
+              <video class="paper-video" style="width: 100%; height: auto;" autoplay muted loop playsinline controls src="./static/video/baselines/case_23.mp4" aria-label="Baseline comparison case 23"></video>
+            </div>
+          </div>
+          <div class="paper-video-row" style="max-width: 840px;">
+            <div class="paper-video-item" style="width: 100%;">
+              <video class="paper-video" style="width: 100%; height: auto;" autoplay muted loop playsinline controls src="./static/video/baselines/case_84.mp4" aria-label="Baseline comparison case 84"></video>
+            </div>
+          </div>
+          <div class="paper-video-row" style="max-width: 840px;">
+            <div class="paper-video-item" style="width: 100%;">
+              <video class="paper-video" style="width: 100%; height: auto;" autoplay muted loop playsinline controls src="./static/video/baselines/case_99.mp4" aria-label="Baseline comparison case 99"></video>
+            </div>
+          </div>
+        </div>
+        <div class="demo-subsection">
+          <h3 class="title is-4" id="open-closed-loop-comparison">3.2 Open-Loop vs. Closed-Loop</h3>
+          <p class="figure-caption non-gallery-caption">In the open-loop setting, the planner autoregressively generates motion based on its own predicted history, without feedback from physical execution. This causes spatial drift to accumulate, leading to an increasing error between the realized state and the reference motion. HIPC instead feeds back the realized state to re-anchor the planning history and update future motion references, enabling correction when physical execution deviates from the plan.</p>
+          <div class="paper-video-row loop-comparison-row">
+            <figure class="paper-video-item">
+              <video class="paper-video" autoplay controls muted loop playsinline src="./static/video/ablation/open_loop.mp4" aria-label="Open-loop motion planning"></video>
+              <figcaption><b>Open-Loop</b><br>Planning from predicted history</figcaption>
+            </figure>
+            <figure class="paper-video-item">
+              <video class="paper-video" autoplay controls muted loop playsinline src="./static/video/ablation/closed_loop.mp4" aria-label="Closed-loop motion planning with HIPC"></video>
+              <figcaption><b>Closed-Loop (HIPC)</b><br>Replanning with realized state</figcaption>
+            </figure>
+          </div>
+          <p class="figure-caption non-gallery-caption">The solid G1 shows the motion under physics simulation, the light, semi-transparent G1 shows the reference motion generated online by the planner, and the blue G1 indicates the goal.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="scene-navigation">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-full-width" style="text-align: left;">
+        <h2 class="title is-2" style="text-align: left; padding-bottom: 10px;">4. Scene Navigation</h2>
+        <p class="figure-caption non-gallery-caption">We demonstrate HIPC with two upstream navigation modules: an occupancy-map-based A* planner with obstacle inflation for maze navigation, and the vision-and-language navigation model OmniNav for indoor navigation. Their waypoints are transformed into HIPC's egocentric goal conditions for online navigation.</p>
+        <div class="demo-subsection" id="map-based-navigation">
+          <h3 class="title is-4">4.1 A*-Guided Maze Navigation</h3>
+          <p class="figure-caption non-gallery-caption">Starting near the center of the maze, the humanoid follows waypoints from an occupancy-map-based A* planner with obstacle inflation through the corridors toward the exit.</p>
+          <div class="paper-video-row">
+            <div class="paper-video-item">
+              <video class="paper-video" style="width: min(680px, 100%); height: auto;" autoplay muted loop playsinline controls src="./static/video/navigation/astar_maze.mp4" aria-label="A*-guided maze navigation"></video>
+            </div>
+          </div>
+        </div>
+        <div class="demo-subsection" id="vision-language-navigation">
+          <h3 class="title is-4">4.2 VLN-Guided Indoor Navigation</h3>
+          <figure class="paper-video-row" style="max-width: 1000px;">
+            <img src="./static/images/teaser_vln/vln.svg" alt="Overview of VLN-guided indoor navigation" style="width: 100%; height: auto;">
+          </figure>
+          <p class="figure-caption non-gallery-caption">We evaluate VLN-guided indoor navigation in six Replica scenes imported into Isaac Sim. OmniNav uses visual observations and language instructions to provide dynamically updated waypoints, which HIPC executes as egocentric goals. Each example below pairs an input frame with the humanoid execution video.</p>
+        <div class="scene-experiment-list">
+          <div style="width: 100%;">
+            <div class="scene-experiment-row"><img src="./static/images/teaser_vln/1.png" alt="Scene experiment 1"><video class="paper-video" autoplay muted loop playsinline controls src="./static/video/video_vln/r1.mp4"></video></div>
+            <p class="figure-caption non-gallery-caption" style="margin-bottom: 0;"><b>Case #1 — Instruction:</b> Go straight, step out of the door, and stop immediately.</p>
+          </div><br><br>
+
+          <div style="width: 100%;">
+            <div class="scene-experiment-row"><img src="./static/images/teaser_vln/2.png" alt="Scene experiment 2"><video class="paper-video" autoplay muted loop playsinline controls src="./static/video/video_vln/r2.mp4"></video></div>
+            <p class="figure-caption non-gallery-caption" style="margin-bottom: 0;"><b>Case #2 — Instruction:</b> Walk to the right and forward, then enter the first door on the right and stop.</p>
+          </div><br><br>
+
+          <div style="width: 100%;">
+            <div class="scene-experiment-row"><img src="./static/images/teaser_vln/3.png" alt="Scene experiment 3"><video class="paper-video" autoplay muted loop playsinline controls src="./static/video/video_vln/r3.mp4"></video></div>
+            <p class="figure-caption non-gallery-caption" style="margin-bottom: 0;"><b>Case #3 — Instruction:</b> Go straight and walk into the open door on the right.</p>
+          </div><br><br>
+
+          <div style="width: 100%;">
+            <div class="scene-experiment-row"><img src="./static/images/teaser_vln/4.png" alt="Scene experiment 4"><video class="paper-video" autoplay muted loop playsinline controls src="./static/video/video_vln/r4.mp4"></video></div>
+            <p class="figure-caption non-gallery-caption" style="margin-bottom: 0;"><b>Case #4 — Instruction:</b> Go straight, passing through the narrow gap between the blue chair and the blue low sofa. Then stop.</p>
+          </div><br><br>
+
+          <div style="width: 100%;">
+            <div class="scene-experiment-row"><img src="./static/images/teaser_vln/5.png" alt="Scene experiment 5"><video class="paper-video" autoplay muted loop playsinline controls src="./static/video/video_vln/r6.mp4"></video></div>
+            <p class="figure-caption non-gallery-caption" style="margin-bottom: 0;"><b>Case #5 — Instruction:</b> Go straight, passing the bed, and stop.</p>
+          </div><br><br>
+
+          <div style="width: 100%;">
+            <div class="scene-experiment-row"><img src="./static/images/teaser_vln/6.png" alt="Scene experiment 6"><video class="paper-video" autoplay muted loop playsinline controls src="./static/video/video_vln/r5.mp4"></video></div>
+            <p class="figure-caption non-gallery-caption" style="margin-bottom: 0;"><b>Case #6 — Instruction:</b> Go straight and stop in front of the dark blue sofa.</p>
+          </div>
+        </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="conclusion">
+  <div class="container">
+    <h2 class="title is-2">Conclusion</h2>
+    <div class="columns is-centered">
+      <div class="column is-four-fifths">
+        <div class="content has-text-justified">
+          <p>
+We presented HIPC, a closed-loop humanoid planning-and-control framework that integrates goal-conditioned generative motion planning with execution-consistent feedback and latency-aware asynchronous control.
+By closing the loop between motion generation and physical execution while preserving planner–controller modularity, HIPC supports accurate goal reaching, robust perturbation recovery, and recovery from unseen fallen configurations across diverse whole-body tasks.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="bibtex">
+  <div class="container">
+    <h2 class="title is-3" style="text-align: left; padding-bottom: 10px;">BibTeX</h2>
+    <div class="columns is-centered">
+      <div class="column is-four-fifths">
+        <div class="content">
+          <pre><code>@article{han2026hipc,
+  title = {HIPC: Humanoid Iterative Planning and Control via Goal-Conditioned Motion Closure},
+  author = TBD
+  year = {2026}
+}</code></pre>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+    <footer class="footer">
+      <div class="container">
+        <div class="content has-text-centered">
+          <p>Page template borrowed from <a href="https://haic-humanoid.github.io/" target="_blank" class="dnerf">HAIC</a></p>
+        </div>
+      </div>
+    </footer>
+
+
+  <!-- JavaScript for TOC Scroll Behavior -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const toc = document.querySelector('.toc');
+      const mainTitle = document.getElementById('main-title');
+      
+      if (toc && mainTitle) {
+        // Function to check if we should show the TOC
+        function checkTocVisibility() {
+          const titleRect = mainTitle.getBoundingClientRect();
+          
+          // Show TOC when the main title is getting close to the top (with 100px buffer)
+          if (titleRect.top <= 100) {
+            toc.classList.add('show');
+          } else {
+            toc.classList.remove('show');
+          }
+        }
+        
+        // Check on scroll
+        window.addEventListener('scroll', checkTocVisibility);
+        
+        // Check on load
+        checkTocVisibility();
+      }
+
+      // Active section highlighting in TOC
+      const tocLinks = document.querySelectorAll('.toc a');
+      const sections = [];
+      
+      // Collect all sections that have corresponding TOC links
+      tocLinks.forEach(link => {
+        const href = link.getAttribute('href');
+        if (href && href.startsWith('#')) {
+          const sectionId = href.substring(1);
+          const section = document.getElementById(sectionId);
+          if (section) {
+            sections.push({
+              id: sectionId,
+              element: section,
+              link: link
+            });
+          }
+        }
+      });
+
+      function updateActiveTocLink() {
+        // Get current scroll position (with offset from top)
+        const scrollPosition = window.scrollY + 150; // 150px offset to trigger earlier
+        const windowHeight = window.innerHeight;
+        const documentHeight = document.documentElement.scrollHeight;
+        
+        // Find the current section
+        let currentSection = null;
+        
+        // Check if we're at the bottom of the page
+        if (window.scrollY + windowHeight >= documentHeight - 50) {
+          // If at bottom, highlight the last section
+          currentSection = sections[sections.length - 1];
+        } else {
+          // Find the section that's currently in view
+          for (let i = 0; i < sections.length; i++) {
+            const section = sections[i];
+            const rect = section.element.getBoundingClientRect();
+            const sectionTop = rect.top + window.scrollY;
+            
+            // Keep a heading active through its content until the next heading.
+            if (scrollPosition >= sectionTop) {
+              currentSection = section;
+            }
+          }
+          
+          // If no section found in viewport, use the last section that's above current position
+          if (!currentSection) {
+            for (let i = sections.length - 1; i >= 0; i--) {
+              const section = sections[i];
+              const sectionTop = section.element.getBoundingClientRect().top + window.scrollY;
+              if (sectionTop <= scrollPosition) {
+                currentSection = section;
+                break;
+              }
+            }
+          }
+        }
+
+        // Update active class on TOC links
+        tocLinks.forEach(link => {
+          link.classList.remove('active');
+        });
+
+        if (currentSection) {
+          currentSection.link.classList.add('active');
+
+          // A third-level item also highlights its parent subsection.
+          const parentHref = currentSection.link.dataset.parent;
+          if (parentHref) {
+            const parentLink = document.querySelector('.toc a[href="' + parentHref + '"]');
+            if (parentLink) parentLink.classList.add('active');
+          }
+          
+          // Also highlight parent link if this is a subsection
+          const parentLi = currentSection.link.closest('li');
+          if (parentLi && parentLi.classList.contains('toc-subsection')) {
+            // Find the previous sibling that is not a subsection (the parent section)
+            let prevSibling = parentLi.previousElementSibling;
+            while (prevSibling) {
+              if (!prevSibling.classList.contains('toc-subsection')) {
+                const parentSectionLink = prevSibling.querySelector('a');
+                if (parentSectionLink) {
+                  parentSectionLink.classList.add('active');
+                }
+                break;
+              }
+              prevSibling = prevSibling.previousElementSibling;
+            }
+          }
+        }
+      }
+
+      // Update on scroll
+      window.addEventListener('scroll', updateActiveTocLink);
+      
+      // Update on load
+      updateActiveTocLink();
+    });
+  </script>
+
+</body>
+
+</html>
