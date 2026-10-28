@@ -356,6 +356,34 @@ video.gallery-video:hover {
 .publication-banner img {
 }
 
+.teaser-image-container {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-top: 2rem;
+  padding: 0 20px;
+  box-sizing: border-box;
+}
+
+.teaser-image {
+  display: block;
+  width: 65%;
+  height: auto;
+  border-radius: 10px;
+}
+
+@media (max-width: 768px) {
+  .teaser-image-container {
+    width: calc(100% + 3rem);
+    margin-left: -1.5rem;
+    padding: 0 12px;
+  }
+
+  .teaser-image {
+    width: 100%;
+  }
+}
+
 .publication-authors {
   /*color: #4286f4;*/
 }
