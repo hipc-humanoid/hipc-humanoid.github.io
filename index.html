@@ -33,8 +33,8 @@
   <script src="./static/js/bulma-slider.min.js"></script>
   <script src="./static/js/index.js"></script>
 
-  <meta property="og:image" content="./static/images/teaser.png" />
-  <meta property="og:image:secure" content="./static/images/teaser.png" />
+  <meta property="og:image" content="./static/images/teaser.svg" />
+  <meta property="og:image:secure" content="./static/images/teaser.svg" />
 </head>
 
 <body>
@@ -70,13 +70,13 @@
     <ul>
       <li><a href="#abstract">Abstract</a></li>
       <li><a href="#goal-planning-control">1. Goal-Conditioned Tracking</a></li>
-      <li class="toc-subsection"><a href="#goal-conditions">1.1 Goal Conditions</a></li>
+      <li class="toc-subsection"><a href="#goal-conditions">1.1 Individual Goals</a></li>
       <li class="toc-subsection toc-subsubsection"><a href="#root-position" data-parent="#goal-conditions">#1 Root Position</a></li>
       <li class="toc-subsection toc-subsubsection"><a href="#root-orientation" data-parent="#goal-conditions">#2 Root Orientation</a></li>
       <li class="toc-subsection toc-subsubsection"><a href="#root-velocity" data-parent="#goal-conditions">#3 Root Velocity</a></li>
       <li class="toc-subsection toc-subsubsection"><a href="#joint-configuration" data-parent="#goal-conditions">#4 Joint Configuration</a></li>
       <li class="toc-subsection toc-subsubsection"><a href="#end-effector-position" data-parent="#goal-conditions">#5 End-Effector Position</a></li>
-      <li class="toc-subsection"><a href="#text-conditioned-motion-priors">1.2 Text-Conditioned Motion Priors</a></li>
+      <li class="toc-subsection"><a href="#text-conditioned-motion-priors">1.2 Composed Goals</a></li>
       <li class="toc-subsection"><a href="#dynamic-goal-switching">1.3 Dynamic Goal Switching</a></li>
       <li class="toc-subsection"><a href="#real-world-goal-tracking">1.4 Real-World Goal Tracking</a></li>
       <li><a href="#robust-tracking-recovery">2. Robust Tracking &amp; Recovery</a></li>
@@ -156,7 +156,7 @@
     </div>
     <!-- MEDIA SLOT: Teaser image. Replace the image file or change only img src below. -->
     <div class="teaser-image-container">
-      <img class="teaser-image" src="./static/images/teaser.png" alt="HIPC teaser" />
+      <img class="teaser-image" src="./static/images/teaser.svg" alt="HIPC teaser" />
     </div>
   </div>
 </section>
@@ -193,7 +193,7 @@ Extensive experiments confirm the effectiveness of HIPC under switching and comp
         <h2 class="title is-2">1. Goal-Conditioned Tracking</h2>
         <p class="figure-caption non-gallery-caption">HIPC generates whole-body motion references from geometric and semantic conditions, and closes the loop with physical execution. These examples show goal reaching, online goal updates, and real-world deployment.</p>
         <div class="demo-subsection" id="goal-conditions">
-          <h3 class="title is-4">1.1 Goal Conditions</h3>
+          <h3 class="title is-4">1.1 Individual Goals</h3>
           <p class="figure-caption non-gallery-caption">HIPC supports geometric goal conditions at different levels of the humanoid state and body configuration.</p>
 
           <h4 class="title is-5 goal-type-title" id="root-position">#1 Root Position</h4>
@@ -298,7 +298,7 @@ Extensive experiments confirm the effectiveness of HIPC under switching and comp
           </div>
         </div>
         <div class="demo-subsection" id="text-conditioned-motion-priors">
-          <h3 class="title is-4">1.2 Text-Conditioned Motion Priors</h3>
+          <h3 class="title is-4">1.2 Composed Goals</h3>
           <div class="paper-video-row motion-prior-row">
             <figure class="paper-video-item">
               <video class="paper-video" autoplay muted loop playsinline controls src="./static/video/text/walk.mp4" aria-label="Walking motion prior"></video>
