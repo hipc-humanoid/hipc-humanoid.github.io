@@ -1054,3 +1054,9 @@ h2[id^="generalization-"] {
     flex-basis: 100%;
   }
 }
+
+/* Keep the static and switching goal videos at identical display dimensions. */
+.dynamic-goal-row video.paper-video {
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+}
