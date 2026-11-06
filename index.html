@@ -79,27 +79,27 @@
     <h3>Content</h3>
     <hr>
     <ul>
-      <li><a href="#abstract">Abstract</a></li>
-      <li><a href="#goal-planning-control">1. Goal-Conditioned Tracking</a></li>
-      <li class="toc-subsection"><a href="#goal-conditions">1.1 Individual Goals</a></li>
-      <li class="toc-subsection toc-subsubsection"><a href="#root-position" data-parent="#goal-conditions">#1 Root Position</a></li>
-      <li class="toc-subsection toc-subsubsection"><a href="#root-orientation" data-parent="#goal-conditions">#2 Root Orientation</a></li>
-      <li class="toc-subsection toc-subsubsection"><a href="#root-velocity" data-parent="#goal-conditions">#3 Root Velocity</a></li>
-      <li class="toc-subsection toc-subsubsection"><a href="#joint-configuration" data-parent="#goal-conditions">#4 Joint Configuration</a></li>
-      <li class="toc-subsection toc-subsubsection"><a href="#end-effector-position" data-parent="#goal-conditions">#5 End-Effector Position</a></li>
-      <li class="toc-subsection"><a href="#text-conditioned-motion-priors">1.2 Composed Goals</a></li>
-      <li class="toc-subsection"><a href="#dynamic-goal-switching">1.3 Static and Switching Goal Reaching</a></li>
-      <li class="toc-subsection"><a href="#real-world-goal-tracking">1.4 Real-World Goal Tracking</a></li>
-      <li><a href="#robust-tracking-recovery">2. Robust Tracking &amp; Recovery</a></li>
-      <li class="toc-subsection"><a href="#perturbation-recovery">2.1 Robustness under Perturbations</a></li>
-      <li class="toc-subsection"><a href="#fall-recovery">2.2 Fall Recovery &amp; Get-Up</a></li>
-      <li><a href="#motion-closure-comparison">3. Comparison Experiments</a></li>
+      <li><a href="#abstract-title">Abstract</a></li>
+      <li><a href="#goal-conditioned-tracking">1. Goal-Conditioned Tracking</a></li>
+      <li class="toc-subsection"><a href="#individual-goals">1.1 Individual Goals</a></li>
+      <li class="toc-subsection toc-subsubsection"><a href="#root-position" data-parent="#individual-goals">#1 Root Position</a></li>
+      <li class="toc-subsection toc-subsubsection"><a href="#root-orientation" data-parent="#individual-goals">#2 Root Orientation</a></li>
+      <li class="toc-subsection toc-subsubsection"><a href="#root-velocity" data-parent="#individual-goals">#3 Root Velocity</a></li>
+      <li class="toc-subsection toc-subsubsection"><a href="#joint-configuration" data-parent="#individual-goals">#4 Joint Configuration</a></li>
+      <li class="toc-subsection toc-subsubsection"><a href="#end-effector-position" data-parent="#individual-goals">#5 End-Effector Position</a></li>
+      <li class="toc-subsection"><a href="#composed-goals">1.2 Composed Goals</a></li>
+      <li class="toc-subsection"><a href="#static-and-switching-goal-reaching">1.3 Static and Switching Goal Reaching</a></li>
+      <li class="toc-subsection"><a href="#real-world-goal-tracking-title">1.4 Real-World Goal Tracking</a></li>
+      <li><a href="#robust-tracking-and-recovery">2. Robust Tracking &amp; Recovery</a></li>
+      <li class="toc-subsection"><a href="#robustness-under-perturbations">2.1 Robustness under Perturbations</a></li>
+      <li class="toc-subsection"><a href="#fall-recovery-and-get-up">2.2 Fall Recovery &amp; Get-Up</a></li>
+      <li><a href="#comparison-experiments">3. Comparison Experiments</a></li>
       <li class="toc-subsection"><a href="#baseline-comparison">3.1 Baseline Comparison</a></li>
-      <li class="toc-subsection"><a href="#open-closed-loop-comparison">3.2 Open-Loop vs. Closed-Loop</a></li>
-      <li><a href="#scene-navigation">4. Scene Navigation</a></li>
-      <li class="toc-subsection"><a href="#map-based-navigation">4.1 A*-Guided Maze Navigation</a></li>
-      <li class="toc-subsection"><a href="#vision-language-navigation">4.2 VLN-Guided Indoor Navigation</a></li>
-      <li><a href="#conclusion">Conclusion</a></li>
+      <li class="toc-subsection"><a href="#open-loop-vs-closed-loop">3.2 Open-Loop vs. Closed-Loop</a></li>
+      <li><a href="#scene-navigation-title">4. Scene Navigation</a></li>
+      <li class="toc-subsection"><a href="#a-guided-maze-navigation">4.1 A*-Guided Maze Navigation</a></li>
+      <li class="toc-subsection"><a href="#vln-guided-indoor-navigation">4.2 VLN-Guided Indoor Navigation</a></li>
+      <li><a href="#conclusion-title">Conclusion</a></li>
     </ul>
   </nav>
   <div class="hero-body">
@@ -232,10 +232,10 @@ Extensive experiments confirm the effectiveness of HIPC under switching and comp
   <div class="container">
     <div class="columns is-centered">
       <div class="column is-full-width">
-        <h2 class="title is-2">1. Goal-Conditioned Tracking</h2>
+        <h2 class="title is-2" id="goal-conditioned-tracking">1. Goal-Conditioned Tracking</h2>
         <p class="figure-caption non-gallery-caption">HIPC generates whole-body motion references from geometric and semantic conditions, and closes the loop with physical execution. These examples show goal reaching, online goal updates, and real-world deployment.</p>
         <div class="demo-subsection" id="goal-conditions">
-          <h3 class="title is-4">1.1 Individual Goals</h3>
+          <h3 class="title is-4" id="individual-goals">1.1 Individual Goals</h3>
           <p class="figure-caption non-gallery-caption">HIPC supports geometric goal conditions at different levels of the humanoid state and body configuration.</p>
 
           <h4 class="title is-5 goal-type-title" id="root-position">#1 Root Position</h4>
@@ -356,7 +356,7 @@ Extensive experiments confirm the effectiveness of HIPC under switching and comp
           </div>
         </div>
         <div class="demo-subsection" id="text-conditioned-motion-priors">
-          <h3 class="title is-4">1.2 Composed Goals</h3>
+          <h3 class="title is-4" id="composed-goals">1.2 Composed Goals</h3>
           <div class="paper-video-row motion-prior-row">
             <figure class="paper-video-item">
               <video class="paper-video" autoplay muted loop playsinline controls src="./static/video/text/run.mp4" aria-label="Running motion prior"></video>
@@ -370,7 +370,7 @@ Extensive experiments confirm the effectiveness of HIPC under switching and comp
           <p class="figure-caption non-gallery-caption"><b>Text as a Motion Prior.</b> Text conditions guide the style and behavior of generated whole-body motion. These examples show running and marching priors used alongside geometric goal conditions.</p>
         </div>
         <div class="demo-subsection" id="dynamic-goal-switching">
-          <h3 class="title is-4">1.3 Static and Switching Goal Reaching</h3>
+          <h3 class="title is-4" id="static-and-switching-goal-reaching">1.3 Static and Switching Goal Reaching</h3>
           <div class="paper-video-row loop-comparison-row dynamic-goal-row">
             <figure class="paper-video-item">
               <video class="paper-video" autoplay muted loop playsinline controls src="./static/video/goal/goal_attraction.mp4" aria-label="Root-position goal attraction"></video>
@@ -384,7 +384,7 @@ Extensive experiments confirm the effectiveness of HIPC under switching and comp
           <p class="figure-caption non-gallery-caption"><b>Static and switching goal reaching.</b> Left: Trajectories from diverse initial states converge to a shared fixed goal. Right: The robot continuously adapts its motion to switching goals.</p>
         </div>
         <div class="demo-subsection" id="real-world-goal-tracking">
-          <h3 class="title is-4">1.4 Real-World Goal Tracking</h3>
+          <h3 class="title is-4" id="real-world-goal-tracking-title">1.4 Real-World Goal Tracking</h3>
           <div class="paper-video-row loop-comparison-row">
             <figure class="paper-video-item">
               <video class="paper-video" autoplay muted loop playsinline controls src="./static/video/real/open_loop.mp4" aria-label="Real-world open-loop goal tracking"></video>
@@ -405,10 +405,10 @@ Extensive experiments confirm the effectiveness of HIPC under switching and comp
   <div class="container">
     <div class="columns is-centered">
       <div class="column is-full-width">
-        <h2 class="title is-2">2. Robust Tracking &amp; Recovery</h2>
+        <h2 class="title is-2" id="robust-tracking-and-recovery">2. Robust Tracking &amp; Recovery</h2>
         <p class="figure-caption non-gallery-caption">Execution feedback allows HIPC to revise motion plans when physical motion deviates from the reference. The following examples distinguish trajectory correction from recovery after a fall.</p>
         <div class="demo-subsection" id="perturbation-recovery">
-          <h3 class="title is-4">2.1 Robustness under Perturbations</h3>
+          <h3 class="title is-4" id="robustness-under-perturbations">2.1 Robustness under Perturbations</h3>
           <div class="paper-video-row">
             <div class="paper-video-item">
               <video class="paper-video" style="height: auto;" autoplay muted loop playsinline controls src="./static/video/recovery/cube_rain.mp4"></video>
@@ -417,7 +417,7 @@ Extensive experiments confirm the effectiveness of HIPC under switching and comp
           <p class="figure-caption non-gallery-caption">HIPC corrects spatial drift and maintains the desired motion under persistent physical perturbations.</p>
         </div>
         <div class="demo-subsection" id="fall-recovery">
-          <h3 class="title is-4">2.2 Fall Recovery &amp; Get-Up</h3>
+          <h3 class="title is-4" id="fall-recovery-and-get-up">2.2 Fall Recovery &amp; Get-Up</h3>
           <div class="paper-video-row">
             <div class="paper-video-item">
               <video class="paper-video" style="height: auto;" autoplay muted loop playsinline controls src="./static/video/recovery/getup.mp4"></video>
@@ -441,7 +441,7 @@ Extensive experiments confirm the effectiveness of HIPC under switching and comp
   <div class="container">
     <div class="columns is-centered">
       <div class="column is-full-width">
-        <h2 class="title is-2">3. Comparison Experiments</h2>
+        <h2 class="title is-2" id="comparison-experiments">3. Comparison Experiments</h2>
         <div class="demo-subsection">
           <h3 class="title is-4" id="baseline-comparison">3.1 Baseline Comparison</h3>
           <p class="figure-caption non-gallery-caption">We compare HIPC with TextOp, OMG, Kimodo, and ARDY. For each comparison case, both the input motion history and the future root positions used as planar goals are sampled from 100STYLE. All methods are connected to the same SONIC tracker under the same closed-loop protocol. The videos below show the resulting planning-and-control executions after SONIC tracking, alongside the corresponding ground-truth motions.</p>
@@ -472,7 +472,7 @@ Extensive experiments confirm the effectiveness of HIPC under switching and comp
           </div>
         </div>
         <div class="demo-subsection">
-          <h3 class="title is-4" id="open-closed-loop-comparison">3.2 Open-Loop vs. Closed-Loop</h3>
+          <h3 class="title is-4" id="open-loop-vs-closed-loop">3.2 Open-Loop vs. Closed-Loop</h3>
           <p class="figure-caption non-gallery-caption">In the open-loop setting, the planner autoregressively generates motion based on its own predicted history, without feedback from physical execution. This causes spatial drift to accumulate, leading to an increasing error between the realized state and the reference motion. HIPC instead feeds back the realized state to re-anchor the planning history and update future motion references, enabling correction when physical execution deviates from the plan.</p>
           <div class="paper-video-row loop-comparison-row">
             <figure class="paper-video-item">
@@ -495,10 +495,10 @@ Extensive experiments confirm the effectiveness of HIPC under switching and comp
   <div class="container">
     <div class="columns is-centered">
       <div class="column is-full-width" style="text-align: left;">
-        <h2 class="title is-2" style="text-align: left; padding-bottom: 10px;">4. Scene Navigation</h2>
+        <h2 class="title is-2" id="scene-navigation-title" style="text-align: left; padding-bottom: 10px;">4. Scene Navigation</h2>
         <p class="figure-caption non-gallery-caption">We demonstrate HIPC with two upstream navigation modules: an occupancy-map-based A* planner with obstacle inflation for maze navigation, and the vision-and-language navigation model OmniNav for indoor navigation. Their waypoints are transformed into HIPC's egocentric goal conditions for online navigation.</p>
         <div class="demo-subsection" id="map-based-navigation">
-          <h3 class="title is-4">4.1 A*-Guided Maze Navigation</h3>
+          <h3 class="title is-4" id="a-guided-maze-navigation">4.1 A*-Guided Maze Navigation</h3>
           <p class="figure-caption non-gallery-caption">Starting near the center of the maze, the humanoid follows waypoints from an occupancy-map-based A* planner with obstacle inflation through the corridors toward the exit.</p>
           <div class="paper-video-row">
             <div class="paper-video-item">
@@ -507,7 +507,7 @@ Extensive experiments confirm the effectiveness of HIPC under switching and comp
           </div>
         </div>
         <div class="demo-subsection" id="vision-language-navigation">
-          <h3 class="title is-4">4.2 VLN-Guided Indoor Navigation</h3>
+          <h3 class="title is-4" id="vln-guided-indoor-navigation">4.2 VLN-Guided Indoor Navigation</h3>
           <figure class="paper-video-row" style="max-width: 1000px;">
             <img src="./static/images/teaser_vln/vln.svg" alt="Overview of VLN-guided indoor navigation" style="width: 100%; height: auto;">
           </figure>
@@ -551,7 +551,7 @@ Extensive experiments confirm the effectiveness of HIPC under switching and comp
 
 <section class="section" id="conclusion">
   <div class="container">
-    <h2 class="title is-2">Conclusion</h2>
+    <h2 class="title is-2" id="conclusion-title">Conclusion</h2>
     <div class="columns is-centered">
       <div class="column is-four-fifths">
         <div class="content has-text-justified">
